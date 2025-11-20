@@ -1,18 +1,9 @@
-
 export interface GeneratedImage {
   id: string;
   imageUrl: string;
   prompt: string;
-  customLabel?: string; // The editable text to display instead of raw prompt
+  customLabel?: string;
   timestamp: number;
-}
-
-export interface AppState {
-  isLoading: boolean;
-  error: string | null;
-  currentImage: File | null;
-  currentImagePreview: string | null;
-  generatedImages: GeneratedImage[];
 }
 
 export interface MockupPreset {
@@ -25,18 +16,10 @@ export interface MockupPreset {
 export interface AppConfig {
   appName: string;
   appDescription: string;
-  logoUrl: string; // If empty, use default icon
-  editorPrompts: string[]; // The quick prompt chips
-  mockupPresets: MockupPreset[]; // Dynamic mockup presets
-  welcomeMessage: string; // Text displayed in empty state
-  adminPin: string; // Password for admin panel
-}
-
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  status: 'pending' | 'approved' | 'rejected';
-  joinedAt: number;
+  logoUrl: string;
+  editorPrompts: string[];
+  mockupPresets: MockupPreset[];
+  welcomeMessage: string;
+  adminPin: string;
+  geminiApiKey?: string; // Added API Key support
 }

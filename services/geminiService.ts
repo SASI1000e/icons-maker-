@@ -11,12 +11,14 @@ const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const generateImageEdit = async (
   images: ImageInput[],
   prompt: string,
+  apiKey: string, // Pass API key dynamically
   retries = 2
 ): Promise<string> => {
-  try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  if (!apiKey) throw new Error("API Key is missing. Please configure it in Admin Panel.");
 
-    // Construct parts: images first, then text
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+
     const parts = [
       ...images.map(img => ({
         inlineData: {
@@ -40,41 +42,25 @@ export const generateImageEdit = async (
             },
         });
 
-        // Check candidates
         const candidates = response.candidates;
-        if (!candidates || candidates.length === 0) {
-            throw new Error("No candidates returned from Gemini.");
-        }
+        if (!candidates || candidates.length === 0) throw new Error("No candidates returned from Gemini.");
 
-        const firstCandidate = candidates[0];
-        const responseParts = firstCandidate.content?.parts;
-
-        if (!responseParts || responseParts.length === 0) {
-            throw new Error("No content parts returned.");
-        }
-
-        // Look for inlineData (image)
-        const imagePart = responseParts.find(p => p.inlineData);
+        const imagePart = candidates[0].content?.parts?.find(p => p.inlineData);
 
         if (imagePart && imagePart.inlineData) {
-            const base64Data = imagePart.inlineData.data;
-            return `data:image/png;base64,${base64Data}`; 
+            return `data:image/png;base64,${imagePart.inlineData.data}`; 
         }
 
         throw new Error("No image data found in the response.");
 
     } catch (apiError: any) {
-        // Check for 429 or Resource Exhausted to retry
         if (
-            (apiError.status === 429 || 
-             apiError.code === 429 || 
-             apiError.message?.includes('429') || 
-             apiError.message?.includes('RESOURCE_EXHAUSTED')) && 
+            (apiError.status === 429 || apiError.message?.includes('429') || apiError.message?.includes('RESOURCE_EXHAUSTED')) && 
             retries > 0
         ) {
             console.warn(`Quota exceeded. Retrying in 4s... (${retries} attempts left)`);
-            await wait(4000); // Wait 4 seconds before retrying
-            return generateImageEdit(images, prompt, retries - 1);
+            await wait(4000);
+            return generateImageEdit(images, prompt, apiKey, retries - 1);
         }
         throw apiError;
     }

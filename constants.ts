@@ -1,4 +1,3 @@
-
 export const MODEL_NAME = 'gemini-2.5-flash-image';
 
 export const SAMPLE_PROMPTS = [
@@ -27,34 +26,10 @@ export const MOCKUP_PRESETS = [
     prompt: "A realistic side-angle photo of a black baseball cap with the provided logo embroidered on the front panel. Fashion photography style, sharp focus, fabric detail." 
   },
   { 
-    id: 'tote', 
-    label: 'Tote Bag', 
-    icon: 'ShoppingBag', 
-    prompt: "A canvas tote bag hanging on a wooden peg, displaying the provided logo clearly in the center. Natural daylight, organic cotton texture, lifestyle photography." 
-  },
-  { 
     id: 'mug', 
     label: 'Mug', 
     icon: 'Coffee', 
     prompt: "A white ceramic coffee mug sitting on a oak table with the provided logo printed on the side. Warm morning sunlight, steam rising, cozy atmosphere, depth of field." 
-  },
-  { 
-    id: 'bottle', 
-    label: 'Water Bottle', 
-    icon: 'Coffee', 
-    prompt: "A matte metal water bottle standing on a gym bench, featuring the provided logo laser etched on the side. Sporty, energetic lighting, high contrast." 
-  },
-  { 
-    id: 'website', 
-    label: 'Website', 
-    icon: 'Monitor', 
-    prompt: "A modern minimal website landing page displayed on a high-end laptop screen, featuring the provided logo in the hero section. Professional web design mockup, clean UI, isometric angle." 
-  },
-  { 
-    id: 'phone', 
-    label: 'Phone Case', 
-    icon: 'Monitor', 
-    prompt: "A modern smartphone lying on a marble surface with a custom case featuring the provided logo pattern. Tech accessory photography, soft shadows." 
   },
   { 
     id: 'card', 
@@ -78,6 +53,6 @@ export const MOCKUP_PRESETS = [
     id: 'custom', 
     label: 'Custom Object', 
     icon: 'Sparkles', 
-    prompt: "" // Prompt will be handled dynamically
+    prompt: "" 
   },
 ];

@@ -15,7 +15,6 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
           
-          {/* Logo Section - Hidden Admin Trigger (Double Click) */}
           <div 
             className="flex items-center space-x-3 cursor-pointer select-none group p-2 rounded-xl transition-colors hover:bg-slate-50/50" 
             onDoubleClick={() => setIsAdminOpen(true)}
@@ -36,7 +35,6 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
             </div>
           </div>
           
-          {/* Navigation Tabs */}
           <div className="flex p-1 bg-slate-100 rounded-xl border border-slate-200">
             <button
               onClick={() => onTabChange('editor')}

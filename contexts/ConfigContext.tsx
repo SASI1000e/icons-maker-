@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AppConfig } from '../types';
 import { SAMPLE_PROMPTS, MOCKUP_PRESETS } from '../constants';
@@ -8,10 +7,10 @@ const DEFAULT_CONFIG: AppConfig = {
   appDescription: "Powered by Gemini 2.5 Flash",
   logoUrl: "",
   editorPrompts: SAMPLE_PROMPTS,
-  // Initialize with all presets except 'custom' which is handled functionally
   mockupPresets: MOCKUP_PRESETS.filter(p => p.id !== 'custom'),
   welcomeMessage: "Upload an image to start designing",
-  adminPin: "admin"
+  adminPin: "admin",
+  geminiApiKey: "" // Initialize empty
 };
 
 interface ConfigContextType {
@@ -28,24 +27,18 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [config, setConfig] = useState<AppConfig>(DEFAULT_CONFIG);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
-  // Load from local storage on mount
   useEffect(() => {
     const savedConfig = localStorage.getItem('app_config');
     if (savedConfig) {
       try {
         const parsed = JSON.parse(savedConfig);
-        // Merge with default to ensure new fields are present if schema changes
         const merged = { 
             ...DEFAULT_CONFIG, 
             ...parsed,
             mockupPresets: parsed.mockupPresets || DEFAULT_CONFIG.mockupPresets,
-            welcomeMessage: parsed.welcomeMessage || DEFAULT_CONFIG.welcomeMessage,
-            adminPin: parsed.adminPin || DEFAULT_CONFIG.adminPin
         };
         setConfig(merged);
-      } catch (e) {
-        console.error("Failed to parse config", e);
-      }
+      } catch (e) { console.error("Failed to parse config", e); }
     }
   }, []);
 
@@ -71,8 +64,6 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 export const useConfig = () => {
   const context = useContext(ConfigContext);
-  if (context === undefined) {
-    throw new Error('useConfig must be used within an ConfigProvider');
-  }
+  if (context === undefined) throw new Error('useConfig must be used within an ConfigProvider');
   return context;
 };

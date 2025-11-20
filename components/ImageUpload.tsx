@@ -25,9 +25,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesSelect, previe
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files).filter((file) => (file as File).type.startsWith('image/'));
+      const files = Array.from(e.dataTransfer.files).filter((file): file is File => file.type.startsWith('image/'));
       if (files.length > 0) {
-        onImagesSelect(files as File[]);
+        onImagesSelect(files);
       }
     }
   }, [onImagesSelect]);
@@ -62,18 +62,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesSelect, previe
                     />
                 </div>
             ))}
-             {/* Add more button (mini dropzone) */}
              {previewUrls.length < 6 && (
                 <label className="relative flex flex-col items-center justify-center h-32 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-white hover:border-brand-400 cursor-pointer transition-all group">
                     <input
                         type="file"
                         accept="image/*"
                         multiple
-                        onChange={(e) => {
-                            if (e.target.files && e.target.files.length > 0) {
-                                onImagesSelect(Array.from(e.target.files));
-                            }
-                        }}
+                        onChange={handleFileChange}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <Plus className="w-6 h-6 text-slate-400 group-hover:text-brand-500" />
