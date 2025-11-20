@@ -13,7 +13,6 @@ export const AdminPanel: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pin, setPin] = useState("");
   const [authError, setAuthError] = useState(false);
-  // const [activeTab, setActiveTab] = useState<'settings'>('settings'); // Only settings now
 
   // Local state for form handling
   const [localName, setLocalName] = useState(config.appName);
@@ -78,7 +77,7 @@ export const AdminPanel: React.FC = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm("האם אתה בטוח שברצונך לאפס את כל ההגדרות לברירת המחדל?")) {
+    if (window.confirm("Are you sure you want to reset all settings to default?")) {
       resetConfig();
       setIsAdminOpen(false);
     }
@@ -133,7 +132,7 @@ export const AdminPanel: React.FC = () => {
   };
 
   const removeMockup = (id: string) => {
-      if(window.confirm("למחוק את תבנית ה-Mockup הזו?")) {
+      if(window.confirm("Delete this mockup preset?")) {
           setLocalMockups(localMockups.filter(m => m.id !== id));
           if (editingMockupId === id) resetMockupForm();
       }
@@ -143,7 +142,7 @@ export const AdminPanel: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
         const file = e.target.files[0];
         if (file.size > 1024 * 1024) {
-            alert("אנא בחר תמונה קטנה מ-1MB.");
+            alert("Please select an image smaller than 1MB.");
             return;
         }
         try {
@@ -159,13 +158,13 @@ export const AdminPanel: React.FC = () => {
 
   if (!isAuthenticated) {
       return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" dir="rtl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 text-center animate-in fade-in zoom-in duration-200">
                  <div className="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-6">
                      <Lock className="w-8 h-8 text-brand-600" />
                  </div>
-                 <h2 className="text-2xl font-bold text-slate-800 mb-2">כניסת מנהל</h2>
-                 <p className="text-slate-500 mb-6">אנא הזן את קוד הגישה (PIN) להגדרות.</p>
+                 <h2 className="text-2xl font-bold text-slate-800 mb-2">Admin Login</h2>
+                 <p className="text-slate-500 mb-6">Please enter access PIN to continue.</p>
                  
                  <form onSubmit={handleLogin} className="space-y-4">
                      <input 
@@ -177,14 +176,14 @@ export const AdminPanel: React.FC = () => {
                         autoFocus
                         autoComplete="off"
                      />
-                     {authError && <p className="text-red-500 text-sm font-medium animate-pulse">קוד שגוי. נסה שנית.</p>}
+                     {authError && <p className="text-red-500 text-sm font-medium animate-pulse">Incorrect PIN. Try again.</p>}
                      
                      <div className="flex gap-3 mt-6">
                          <Button type="button" variant="secondary" className="flex-1" onClick={() => setIsAdminOpen(false)}>
-                             ביטול
+                             Cancel
                          </Button>
                          <Button type="submit" className="flex-1">
-                             כניסה <Unlock className="w-4 h-4 mr-2" />
+                             Login <Unlock className="w-4 h-4 ml-2" />
                          </Button>
                      </div>
                  </form>
@@ -194,8 +193,8 @@ export const AdminPanel: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" dir="rtl">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200 text-right">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200 text-left">
         
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -204,7 +203,7 @@ export const AdminPanel: React.FC = () => {
                 <div className="p-2 bg-brand-100 rounded-lg">
                     <Settings className="w-5 h-5 text-brand-600" />
                 </div>
-                <h2 className="text-xl font-bold">לוח ניהול מערכת</h2>
+                <h2 className="text-xl font-bold">System Admin Panel</h2>
              </div>
           </div>
 
@@ -212,14 +211,14 @@ export const AdminPanel: React.FC = () => {
             <button 
                 onClick={handleLock}
                 className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition-colors"
-                title="נעל לוח ניהול"
+                title="Lock Admin Panel"
             >
                 <LogOut className="w-5 h-5" />
             </button>
             <button 
                 onClick={() => setIsAdminOpen(false)}
                 className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition-colors"
-                title="סגור"
+                title="Close"
             >
                 <X className="w-5 h-5" />
             </button>
@@ -233,12 +232,12 @@ export const AdminPanel: React.FC = () => {
                 {/* Left Column: Branding & Editor Prompts */}
                 <div className="space-y-8">
                     <section className="space-y-6">
-                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">מיתוג וטקסטים</h3>
+                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">Branding & Texts</h3>
                         
                         <div className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-slate-700">שם המערכת (App Name)</label>
+                                    <label className="block text-sm font-medium text-slate-700">App Name</label>
                                     <input 
                                     type="text" 
                                     value={localName}
@@ -247,7 +246,7 @@ export const AdminPanel: React.FC = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-slate-700">תיאור תחתון (Subtitle)</label>
+                                    <label className="block text-sm font-medium text-slate-700">Subtitle</label>
                                     <input 
                                     type="text" 
                                     value={localDesc}
@@ -259,7 +258,7 @@ export const AdminPanel: React.FC = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-slate-700">הודעת פתיחה (במסך ריק)</label>
+                                    <label className="block text-sm font-medium text-slate-700">Welcome Message</label>
                                     <input 
                                     type="text" 
                                     value={localWelcome}
@@ -269,8 +268,8 @@ export const AdminPanel: React.FC = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-slate-700 flex items-center">
-                                        <Lock className="w-3 h-3 ml-1.5" />
-                                        שינוי קוד גישה למנהל
+                                        <Lock className="w-3 h-3 mr-1.5" />
+                                        Change Admin PIN
                                     </label>
                                     <input 
                                     type="text" 
@@ -282,7 +281,7 @@ export const AdminPanel: React.FC = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-slate-700">לוגו המערכת</label>
+                                <label className="block text-sm font-medium text-slate-700">System Logo</label>
                                 <div className="flex gap-4 items-start">
                                     <div className="w-16 h-16 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                                         {localLogo ? (
@@ -293,7 +292,7 @@ export const AdminPanel: React.FC = () => {
                                     </div>
                                     <div className="flex-1 space-y-2">
                                         <label className="block w-full text-center px-3 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-brand-300 cursor-pointer transition-all">
-                                            <Upload className="w-4 h-4 inline ml-2" /> בחר קובץ תמונה
+                                            <Upload className="w-4 h-4 inline mr-2" /> Choose Image
                                             <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
                                         </label>
                                         {localLogo.startsWith('data:') && (
@@ -301,7 +300,7 @@ export const AdminPanel: React.FC = () => {
                                                 onClick={() => setLocalLogo('')} 
                                                 className="text-xs text-red-500 hover:underline w-full text-center"
                                             >
-                                                הסר לוגו נוכחי
+                                                Remove Current Logo
                                             </button>
                                         )}
                                     </div>
@@ -311,14 +310,14 @@ export const AdminPanel: React.FC = () => {
                     </section>
 
                     <section className="space-y-4">
-                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">הצעות לעריכה מהירה</h3>
+                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">Quick Prompt Suggestions</h3>
                         <div className="flex gap-2">
                         <input 
                             type="text" 
                             value={newPrompt}
                             onChange={(e) => setNewPrompt(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addPrompt()}
-                            placeholder="הוסף כפתור הצעה חדש..."
+                            placeholder="Add new prompt button..."
                             className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
                         />
                         <button onClick={addPrompt} className="bg-slate-100 hover:bg-brand-50 hover:text-brand-600 hover:border-brand-200 text-slate-700 px-3 rounded-lg border border-slate-200 transition-all">
@@ -328,7 +327,7 @@ export const AdminPanel: React.FC = () => {
                         <div className="flex flex-wrap gap-2 bg-slate-50 p-4 rounded-xl border border-slate-200 min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar">
                         {localPrompts.map((prompt, idx) => (
                             <div key={idx} className="flex items-center bg-white border border-slate-200 rounded-full px-3 py-1.5 shadow-sm group hover:border-brand-200 transition-colors">
-                            <span className="text-xs text-slate-700 ml-2">{prompt}</span>
+                            <span className="text-xs text-slate-700 mr-2">{prompt}</span>
                             <button onClick={() => removePrompt(idx)} className="text-slate-400 hover:text-red-500 transition-colors">
                                 <X className="w-3 h-3" />
                             </button>
@@ -341,18 +340,18 @@ export const AdminPanel: React.FC = () => {
                 {/* Right Column: Mockup Management */}
                 <div className="space-y-6 h-full flex flex-col">
                     <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center justify-between">
-                        <span>תבניות Mockup</span>
-                        <span className="text-xs normal-case bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{localMockups.length} תבניות</span>
+                        <span>Mockup Presets</span>
+                        <span className="text-xs normal-case bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{localMockups.length} presets</span>
                     </h3>
 
                     <div className={`p-4 rounded-xl border space-y-3 shadow-sm transition-all ${editingMockupId ? 'bg-amber-50 border-amber-200' : 'bg-brand-50 border-brand-100'}`}>
                         <h4 className={`text-xs font-bold uppercase flex items-center justify-between ${editingMockupId ? 'text-amber-700' : 'text-brand-800'}`}>
                             <span className="flex items-center">
-                                {editingMockupId ? <Edit2 className="w-3 h-3 ml-1" /> : <Plus className="w-3 h-3 ml-1" />} 
-                                {editingMockupId ? 'עריכת תבנית' : 'הוספת תבנית חדשה'}
+                                {editingMockupId ? <Edit2 className="w-3 h-3 mr-1" /> : <Plus className="w-3 h-3 mr-1" />} 
+                                {editingMockupId ? 'Edit Preset' : 'Add New Preset'}
                             </span>
                             {editingMockupId && (
-                                <button onClick={resetMockupForm} className="text-amber-600 hover:text-amber-800 underline">ביטול</button>
+                                <button onClick={resetMockupForm} className="text-amber-600 hover:text-amber-800 underline">Cancel</button>
                             )}
                         </h4>
                         <div className="grid grid-cols-3 gap-2">
@@ -361,7 +360,7 @@ export const AdminPanel: React.FC = () => {
                                     type="text"
                                     value={newMockupLabel}
                                     onChange={(e) => setNewMockupLabel(e.target.value)}
-                                    placeholder="שם התבנית"
+                                    placeholder="Preset Name"
                                     className="w-full px-3 py-2 text-sm border border-white/50 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none shadow-sm"
                                 />
                             </div>
@@ -371,36 +370,35 @@ export const AdminPanel: React.FC = () => {
                                     onChange={(e) => setNewMockupIcon(e.target.value)}
                                     className="w-full px-2 py-2 text-sm border border-white/50 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none bg-white shadow-sm"
                                 >
-                                    <option value="Box">קופסה</option>
-                                    <option value="Shirt">חולצה</option>
-                                    <option value="HardHat">קסדה</option>
-                                    <option value="ShoppingBag">תיק</option>
-                                    <option value="Coffee">ספל</option>
-                                    <option value="Monitor">מסך</option>
-                                    <option value="Tag">תווית</option>
-                                    <option value="Sparkles">כללי</option>
+                                    <option value="Box">Box</option>
+                                    <option value="Shirt">Shirt</option>
+                                    <option value="HardHat">Hat/Helmet</option>
+                                    <option value="ShoppingBag">Bag</option>
+                                    <option value="Coffee">Mug</option>
+                                    <option value="Monitor">Screen</option>
+                                    <option value="Tag">Tag</option>
+                                    <option value="Sparkles">General</option>
                                 </select>
                             </div>
                         </div>
                         <textarea
                             value={newMockupPrompt}
                             onChange={(e) => setNewMockupPrompt(e.target.value)}
-                            placeholder="הנחייה ל-AI באנגלית..."
+                            placeholder="AI Prompt (English)..."
                             className="w-full px-3 py-2 text-sm border border-white/50 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none h-20 resize-none shadow-sm text-left"
-                            dir="ltr"
                         />
                         <Button 
                             onClick={handleMockupSubmit} 
                             disabled={!newMockupLabel || !newMockupPrompt} 
                             className={`w-full py-1.5 text-xs ${editingMockupId ? 'bg-amber-600 hover:bg-amber-700' : ''}`}
                         >
-                            {editingMockupId ? 'עדכן תבנית' : 'שמור תבנית'}
+                            {editingMockupId ? 'Update Preset' : 'Save Preset'}
                         </Button>
                     </div>
 
                     <div className="flex-1 overflow-y-auto border border-slate-200 rounded-xl bg-slate-50 divide-y divide-slate-100 custom-scrollbar shadow-inner h-[300px]">
                         {localMockups.length === 0 && (
-                            <div className="p-8 text-center text-slate-400 text-sm">לא הוגדרו תבניות.</div>
+                            <div className="p-8 text-center text-slate-400 text-sm">No presets configured.</div>
                         )}
                         {localMockups.map((mockup) => (
                             <div key={mockup.id} className={`p-3 flex items-start justify-between group hover:bg-white transition-colors ${editingMockupId === mockup.id ? 'bg-white ring-2 ring-inset ring-amber-100' : ''}`}>
@@ -412,7 +410,7 @@ export const AdminPanel: React.FC = () => {
                                         <div className="flex items-center gap-2">
                                             <p className="text-sm font-medium text-slate-800 truncate">{mockup.label}</p>
                                         </div>
-                                        <p className="text-xs text-slate-500 truncate max-w-[180px] text-left" dir="ltr">{mockup.prompt}</p>
+                                        <p className="text-xs text-slate-500 truncate max-w-[180px] text-left">{mockup.prompt}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -433,17 +431,17 @@ export const AdminPanel: React.FC = () => {
                 onClick={handleReset}
                 className="flex items-center text-sm text-red-500 hover:text-red-700 px-3 py-2 rounded hover:bg-red-50 transition-colors"
             >
-                <RotateCcw className="w-4 h-4 ml-2" />
-                אפס להגדרות יצרן
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Reset to Defaults
             </button>
             
             <div className="flex items-center gap-3">
                 <Button variant="secondary" onClick={() => setIsAdminOpen(false)}>
-                ביטול
+                Cancel
                 </Button>
                 <Button onClick={handleSave}>
-                <Save className="w-4 h-4 ml-2" />
-                שמור שינויים
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
                 </Button>
             </div>
         </div>

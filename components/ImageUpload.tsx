@@ -25,9 +25,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesSelect, previe
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+      const files = Array.from(e.dataTransfer.files).filter((file) => (file as File).type.startsWith('image/'));
       if (files.length > 0) {
-        onImagesSelect(files);
+        onImagesSelect(files as File[]);
       }
     }
   }, [onImagesSelect]);
